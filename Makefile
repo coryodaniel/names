@@ -1,6 +1,6 @@
 DOCKERFILE=./Dockerfile
-REPO_ROOT=quay.io
-IMAGE_NAME=coryodaniel:latest
+REPO_ROOT=quay.io/coryodaniel
+IMAGE_NAME=names:latest
 IMAGE_URL=${REPO_ROOT}/${IMAGE_NAME}
 
 .PHONY: help
