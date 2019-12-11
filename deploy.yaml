@@ -1,0 +1,38 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: names-service
+spec:
+  selector:
+    app: names
+  ports:
+  - protocol: TCP
+    port: 5050
+    targetPort: 5050
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: names
+  name: names
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: names
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: names
+    spec:
+      containers:
+      - image: quay.io/coryodaniel/names:latest
+        name: names
+        env:
+        - name: NAMES_PORT
+          value: "5050"

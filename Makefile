@@ -2,6 +2,7 @@ DOCKERFILE=./Dockerfile
 REPO_ROOT=quay.io/coryodaniel
 IMAGE_NAME=names:latest
 IMAGE_URL=${REPO_ROOT}/${IMAGE_NAME}
+NAMES_PORT=5050
 
 .PHONY: help
 help: ## Show this help
@@ -28,4 +29,12 @@ publish:
 
 .PHONY: run
 run:
-	docker run ${IMAGE_NAME}
+	docker run -e NAMES_PORT=${NAMES_PORT} -p ${NAMES_PORT}:${NAMES_PORT} ${IMAGE_NAME}
+
+.PHONY: deploy
+deploy:
+	kubectl apply -f ./deploy.yaml
+
+.PHONY: proxy
+proxy:
+	kubectl port-forward -n default $(shell kubectl get pod -n default --selector="app=names" --output jsonpath='{.items[0].metadata.name}') ${NAMES_PORT}
